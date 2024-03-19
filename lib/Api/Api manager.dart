@@ -1,5 +1,8 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+import 'package:movies/Models/movieDetailsModel.dart';
+
 import '../Models/movieModel.dart'; // Import Movie model
 import 'ApiConstats.dart'; // Import ApiConstants.dart to ensure apiKey is correctly defined
 
@@ -61,7 +64,8 @@ class Api {
   }
 
   // Fetch details of a specific movie using its ID
-  Future<Movie> getMovieDetails(int movieId) async {
+  Future<MovieDetailsClass> getDetails(int movieId) async {
+    final apiKey = "e65d3d95be7d1f9a6e3c1e4dcc60cb57";
     final movieDetailsUrl =
         "https://api.themoviedb.org/3/movie/$movieId?api_key=$apiKey";
 
@@ -69,14 +73,15 @@ class Api {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
-      return Movie.fromMap(data);
+      return MovieDetailsClass.fromJson(data);
     } else {
       throw Exception('Failed to load movie details');
     }
   }
 
   // Fetch similar movies for a given movie ID
-  Future<List<Movie>> getSimilarMovies(int movieId) async {
+  Future<List<MovieDetailsClass>> getSimilarMovie(int movieId) async {
+    final apiKey = "e65d3d95be7d1f9a6e3c1e4dcc60cb57";
     final similarMoviesUrl =
         "https://api.themoviedb.org/3/movie/$movieId/similar?api_key=$apiKey";
 
@@ -84,14 +89,13 @@ class Api {
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body)['results'];
-
-      List<Movie> movies = data.map((movie) => Movie.fromMap(movie)).toList();
+      final List<MovieDetailsClass> movies =
+          data.map((movie) => MovieDetailsClass.fromJson(movie)).toList();
       return movies;
     } else {
       throw Exception('Failed to load similar movies');
     }
   }
-
   // Search for movies based on a query string
   Future<List<Movie>> searchMovies(String query) async {
     final response = await http.get(Uri.parse("$searchApiUrl&query=$query"));

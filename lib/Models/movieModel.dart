@@ -16,7 +16,6 @@ class Movie {
   factory Movie.fromMap(Map<String, dynamic> map) {
     return Movie(
       id: map['id'],
-      // Assign value to id property
       title: map['title'],
       backDropPath: map['backdrop_path'],
       overview: map['overview'],
