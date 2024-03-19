@@ -79,6 +79,22 @@ class Api {
     }
   }
 
+  Future<List<MovieDetailsClass>> getRecommended() async {
+    final apiKey = "e65d3d95be7d1f9a6e3c1e4dcc60cb57";
+    final movieRecommend =
+        "https://api.themoviedb.org/3/movie/top_rated?api_key=$apiKey";
+    final response = await http.get(Uri.parse(movieRecommend));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body)['results'];
+      final List<MovieDetailsClass> movies =
+          data.map((movie) => MovieDetailsClass.fromJson(movie)).toList();
+      return movies;
+    } else {
+      throw Exception('Failed to load movie details');
+    }
+  }
+
   // Fetch similar movies for a given movie ID
   Future<List<MovieDetailsClass>> getSimilarMovie(int movieId) async {
     final apiKey = "e65d3d95be7d1f9a6e3c1e4dcc60cb57";

@@ -22,7 +22,6 @@ class SimilarModel {
     totalPages = json['total_pages'];
     totalResults = json['total_results'];
   }
-
   int? page;
   List<Results>? results;
   int? totalPages;
@@ -89,7 +88,6 @@ class Results {
     voteAverage = json['vote_average'];
     voteCount = json['vote_count'];
   }
-
   bool? adult;
   String? backdropPath;
   List<int>? genreIds;
@@ -123,4 +121,5 @@ class Results {
     map['vote_count'] = voteCount;
     return map;
   }
+
 }

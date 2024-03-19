@@ -294,17 +294,9 @@ class MovieCard extends StatelessWidget {
                     '   ${movie.releaseDate!.substring(0, 4)}',
                     style: TextStyle(fontSize: 8, color: Colors.white),
                   ),
-                  // Text(
-                  //   'R',
-                  //   style: TextStyle(fontSize: 8,color: Colors.white),
-                  // ),
                   SizedBox(
                     width: 5,
                   ),
-                  // Text(
-                  //   '${movie.runtime}',
-                  //   style: TextStyle(fontSize: 8,color: Colors.white),
-                  // ),
                 ],
               ),
             )

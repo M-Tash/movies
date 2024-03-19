@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../Api/Api manager.dart'; // Import your API manager
 import '../Models/movieModel.dart';
 import 'MovieDetails.dart'; // Import your Movie model
