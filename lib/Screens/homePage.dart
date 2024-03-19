@@ -3,10 +3,7 @@ import 'package:movies/Models/movieDetailsModel.dart';
 
 import '../Api/Api manager.dart'; // Import API manager
 import '../Models/movieModel.dart'; // Import Movie model
-import 'CategoryScreen.dart'; // Import CategoryScreen
 import 'MovieDetails.dart'; // Import MovieDetails screen
-import 'SearchScreen.dart'; // Import SearchScreen
-import 'WatchListScreen.dart'; // Import WatchListScreen
 
 class HomePage extends StatefulWidget {
   static const String routeName = 'Home';
@@ -16,8 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0; // Index to track selected bottom navigation bar item
-
+  // Index to track selected bottom navigation bar item
   late Future<List<Movie>> upcomingMovies; // Future for upcoming movies
   late Future<List<Movie>> popularMovies; // Future for popular movies
   late Future<List<MovieDetailsClass>>
@@ -89,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                             Container(
                               width: 400,
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: Color(0xff121312),
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: Image.network(
@@ -261,33 +257,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
 
-    switch (index) {
-      case 0:
-        // No navigation needed as we are already on the home screen
-        break;
-      case 1:
-        Navigator.pushNamed(context, SearchScreen.routeName);
-        break;
-      case 2:
-        Navigator.pushNamed(context, CategoryScreen.routeName);
-        break;
-      case 3:
-        Navigator.pushNamed(context, WatchListScreen.routeName);
-        break;
-    }
-  }
 
-  List<Widget> tabs = [
-    HomePage(),
-    SearchScreen(),
-    CategoryScreen(),
-    WatchListScreen()
-  ];
 
   // Navigate to movie details screen
   void navigateToMovieDetails(int movieId) {
