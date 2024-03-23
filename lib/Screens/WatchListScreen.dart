@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:movies/items/watchListItem.dart';
 
 import '../Api/Api manager.dart';
 import '../Models/movieDetailsModel.dart';
@@ -50,8 +51,16 @@ class _WatchListScreenState extends State<WatchListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text('Movie Details'),
+        centerTitle: true,
+        backgroundColor: Colors.black,
+        title: Text('WatchList',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 25
+        ),
+        ),
       ),
       body: FutureBuilder<List<MovieDetailsClass?>>(
         future: _movieDetailsList,
@@ -66,19 +75,28 @@ class _WatchListScreenState extends State<WatchListScreen> {
             );
           } else {
             // Display the list of movie details
-            return ListView.builder(
+            return ListView.separated(
+              separatorBuilder: (context, index) {
+                return Divider(color: Colors.white,
+                    height: 2,indent: 5,endIndent: 5,);
+              },
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final movieDetails = snapshot.data![index];
-                return ListTile(
-                  title: Text(
-                    'Movie ID: ${movieIds[index]}',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  subtitle: movieDetails != null
-                      ? Text('Details: ${movieDetails.title}')
-                      : Text('Details not available'),
-                );
+                return
+                    WatchListItem(title: movieDetails?.title,
+                        date: movieDetails?.releaseDate,
+                        imagePath: movieDetails?.posterPath)
+                  // ListTile(
+                  // title: Text(
+                  //   'Movie ID: ${movieIds[index]}',
+                  //   style: TextStyle(color: Colors.white),
+                  // ),
+                  // subtitle: movieDetails != null
+                  //     ? Text('Details: ${movieDetails.title}')
+                  //     : Text('Details not available'),
+               // )
+                ;
               },
             );
           }

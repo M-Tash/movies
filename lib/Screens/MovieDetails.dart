@@ -181,7 +181,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                                     print(widget.movieId);
                                   },
                                   child:Icon(
-                                      Icons.save_alt_outlined,
+                                      Icons.bookmark,
                                       size: 30,
                                       color:Color(0xffFFBB3B)) ,
                                 )
