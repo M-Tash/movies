@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../Api/Api manager.dart';
 import '../Models/movieDetailsModel.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MovieDetails extends StatefulWidget {
+
+
+
   static const String routeName = 'MovieDetails';
 
   final int movieId;
@@ -16,6 +21,7 @@ class MovieDetails extends StatefulWidget {
 
 class _MovieDetailsState extends State<MovieDetails> {
   late Future<MovieDetailsClass?> _movieDetails;
+  // late Future<List<MovieDetailsClass?>> _mo;
   late Future<List<MovieDetailsClass?>> _similarMovies;
 
   @override
@@ -27,6 +33,18 @@ class _MovieDetailsState extends State<MovieDetails> {
 
   @override
   Widget build(BuildContext context) {
+
+    CollectionReference movies = FirebaseFirestore.instance.collection('movies');
+
+    Future<void> addMovie() {
+      return movies
+          .add({
+        'movie_id': widget.movieId  // John Doe
+      })
+          .then((value) => print("movie Added"))
+          .catchError((error) => print("Failed to add user: $error"));
+    }
+
     return Scaffold(
       backgroundColor: Color(0xff121312),
       body: SingleChildScrollView(
@@ -155,7 +173,19 @@ class _MovieDetailsState extends State<MovieDetails> {
                                     fontWeight: FontWeight.w700,
                                     color: Colors.white,
                                   ),
+                                ),
+                                SizedBox(width: 10),
+                                InkWell(
+                                  onTap: (){
+                                    addMovie();
+                                    print(widget.movieId);
+                                  },
+                                  child:Icon(
+                                      Icons.save_alt_outlined,
+                                      size: 30,
+                                      color:Color(0xffFFBB3B)) ,
                                 )
+
                               ],
                             ),
                           )

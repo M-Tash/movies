@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                       final movie = movies[index];
                       return GestureDetector(
                         onTap: () {
-                          navigateToMovieDetails(movie.id);
+                          navigateToMovieDetails(movie.id);// mask object mn movie
                         },
                         child: Stack(
                           children: [
