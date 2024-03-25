@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies/items/watchListItem.dart';
 
 import '../Api/Api manager.dart'; // Import your API manager
 import '../Models/movieModel.dart';
@@ -19,6 +20,8 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+         backgroundColor: Colors.black ,
         title: Text(
           'Search',
           style:
@@ -72,17 +75,18 @@ class _SearchScreenState extends State<SearchScreen> {
                     itemCount: movies.length,
                     itemBuilder: (context, index) {
                       Movie movie = movies[index];
-                      return ListTile(
-                        title: Text(
-                          movie.title,
-                          style: TextStyle(
-                              color: Colors.white), // Set text color to white
-                        ),
-                        onTap: () {
-                          // Navigate to movie details screen
-                          navigateToMovieDetails(movie.id);
-                        },
-                      );
+                      return WatchListItem(title: movie.title, imagePath: movie.posterPath,id: movie.id);
+                      //   ListTile(
+                      //   title: Text(
+                      //     movie.title,
+                      //     style: TextStyle(
+                      //         color: Colors.white), // Set text color to white
+                      //   ),
+                      //   onTap: () {
+                      //     // Navigate to movie details screen
+                      //     navigateToMovieDetails(movie.id);
+                      //   },
+                      // );
                     },
                   );
                 }

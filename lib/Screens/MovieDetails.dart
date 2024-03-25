@@ -21,7 +21,7 @@ class MovieDetails extends StatefulWidget {
 
 class _MovieDetailsState extends State<MovieDetails> {
   late Future<MovieDetailsClass?> _movieDetails;
-  // late Future<List<MovieDetailsClass?>> _mo;
+
   late Future<List<MovieDetailsClass?>> _similarMovies;
 
   @override

@@ -51,10 +51,10 @@ class _WatchListScreenState extends State<WatchListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor:  Color(0xff282A28),
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.black,
+        backgroundColor:  Color(0xff282A28),
         title: Text('WatchList',
         style: TextStyle(
           color: Colors.white,
@@ -86,7 +86,8 @@ class _WatchListScreenState extends State<WatchListScreen> {
                 return
                     WatchListItem(title: movieDetails?.title,
                         date: movieDetails?.releaseDate,
-                        imagePath: movieDetails?.posterPath)
+                        imagePath: movieDetails?.posterPath,
+                    id: movieDetails?.id)
                   // ListTile(
                   // title: Text(
                   //   'Movie ID: ${movieIds[index]}',
