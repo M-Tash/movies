@@ -1,9 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../Api/Api manager.dart';
+import '../Api/FireBase.dart';
 import '../Models/movieDetailsModel.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MovieDetails extends StatefulWidget {
 
@@ -31,20 +31,10 @@ class _MovieDetailsState extends State<MovieDetails> {
     _similarMovies = Api().getSimilarMovie(widget.movieId);
   }
 
+  bool isSelected = false;
+
   @override
   Widget build(BuildContext context) {
-
-    CollectionReference movies = FirebaseFirestore.instance.collection('movies');
-
-    Future<void> addMovie() {
-      return movies
-          .add({
-        'movie_id': widget.movieId  // John Doe
-      })
-          .then((value) => print("movie Added"))
-          .catchError((error) => print("Failed to add user: $error"));
-    }
-
     return Scaffold(
       backgroundColor: Color(0xff121312),
       body: SingleChildScrollView(
@@ -175,15 +165,18 @@ class _MovieDetailsState extends State<MovieDetails> {
                                   ),
                                 ),
                                 SizedBox(width: 10),
-                                InkWell(
-                                  onTap: (){
-                                    addMovie();
-                                    print(widget.movieId);
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      isSelected = !isSelected;
+                                      FireBase().addMovie(widget.movieId);
+                                    });
                                   },
-                                  child:Icon(
-                                      Icons.bookmark,
+                                  child: Icon(Icons.bookmark,
                                       size: 30,
-                                      color:Color(0xffFFBB3B)) ,
+                                      color: isSelected
+                                          ? Color(0xffFFBB3B)
+                                          : Colors.grey),
                                 )
 
                               ],
@@ -264,10 +257,27 @@ class _MovieDetailsState extends State<MovieDetails> {
   }
 }
 
-class MovieCard extends StatelessWidget {
+class MovieCard extends StatefulWidget {
   final MovieDetailsClass movie;
 
   const MovieCard({Key? key, required this.movie}) : super(key: key);
+
+  @override
+  State<MovieCard> createState() => _MovieCardState();
+}
+
+class _MovieCardState extends State<MovieCard> {
+  bool isSelected = false;
+  CollectionReference movies = FirebaseFirestore.instance.collection('movies');
+
+  Future<void> addMovie() {
+    return movies
+        .add({
+          'movie_id': widget.movie.id // John Doe
+        })
+        .then((value) => print("movie Added"))
+        .catchError((error) => print("Failed to add user: $error"));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -281,11 +291,32 @@ class MovieCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.network(
-              'https://image.tmdb.org/t/p/original/${movie.posterPath}',
-              width: 100,
-              height: 127,
-              fit: BoxFit.fitWidth,
+            Stack(
+              children: [
+                Image.network(
+                  'https://image.tmdb.org/t/p/original/${widget.movie.posterPath}',
+                  width: 100,
+                  height: 127,
+                  fit: BoxFit.fitWidth,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isSelected = !isSelected;
+                      if (isSelected == true) {
+                        addMovie();
+                      } else {
+                        setState(() {
+                          FireBase().deleteMovie(widget.movie.id!);
+                        });
+                      }
+                    });
+                  },
+                  child: Icon(Icons.bookmark,
+                      size: 30,
+                      color: isSelected ? Color(0xffFFBB3B) : Colors.grey),
+                ),
+              ],
             ),
             SizedBox(height: 4),
             Row(
@@ -299,7 +330,7 @@ class MovieCard extends StatelessWidget {
                   width: 2,
                 ),
                 Text(
-                  '${movie.voteAverage!.toString().substring(0, 3)}',
+                  '${widget.movie.voteAverage!.toString().substring(0, 3)}',
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
@@ -312,7 +343,7 @@ class MovieCard extends StatelessWidget {
               width: 100,
               height: 26,
               child: Text(
-                ' ${movie.originalTitle!}',
+                ' ${widget.movie.originalTitle!}',
                 style: TextStyle(fontSize: 10, color: Colors.white),
               ),
             ),
@@ -321,7 +352,7 @@ class MovieCard extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    '   ${movie.releaseDate!.substring(0, 4)}',
+                    '   ${widget.movie.releaseDate!.substring(0, 4)}',
                     style: TextStyle(fontSize: 8, color: Colors.white),
                   ),
                   SizedBox(

@@ -22,16 +22,16 @@ class Api {
       "https://api.themoviedb.org/3/discover/movie?api_key=$apiKey";
 
   // Fetch upcoming movies from the API
-  Future<List<Movie>> getUpcomingMovies() async {
+  Future<List<MovieDetailsClass>> getUpcomingMovies() async {
     final response = await http.get(Uri.parse(upComingApiUrl));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body)['results'];
-
-      List<Movie> movies = data.map((movie) => Movie.fromMap(movie)).toList();
+      final List<MovieDetailsClass> movies =
+          data.map((movie) => MovieDetailsClass.fromJson(movie)).toList();
       return movies;
     } else {
-      throw Exception('Failed to load upcoming movies');
+      throw Exception('Failed to load movie details');
     }
   }
 
@@ -50,18 +50,6 @@ class Api {
   }
 
   // Fetch top rated movies from the API
-  Future<List<Movie>> getTopRatedMovies() async {
-    final response = await http.get(Uri.parse(topRatedApiUrl));
-
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body)['results'];
-
-      List<Movie> movies = data.map((movie) => Movie.fromMap(movie)).toList();
-      return movies;
-    } else {
-      throw Exception('Failed to load top rated movies');
-    }
-  }
 
   // Fetch details of a specific movie using its ID
   Future<MovieDetailsClass> getDetails(int movieId) async {
@@ -80,11 +68,7 @@ class Api {
   }
 
   Future<List<MovieDetailsClass>> getRecommended() async {
-    final apiKey = "e65d3d95be7d1f9a6e3c1e4dcc60cb57";
-    final movieRecommend =
-        "https://api.themoviedb.org/3/movie/top_rated?api_key=$apiKey";
-    final response = await http.get(Uri.parse(movieRecommend));
-
+    final response = await http.get(Uri.parse(topRatedApiUrl));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body)['results'];
       final List<MovieDetailsClass> movies =

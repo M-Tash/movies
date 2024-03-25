@@ -84,11 +84,14 @@ class _WatchListScreenState extends State<WatchListScreen> {
               itemBuilder: (context, index) {
                 final movieDetails = snapshot.data![index];
                 return
-                    WatchListItem(title: movieDetails?.title,
-                        date: movieDetails?.releaseDate,
-                        imagePath: movieDetails?.posterPath,
-                    id: movieDetails?.id)
-                  // ListTile(
+                    WatchListItem(
+                  title: movieDetails?.title,
+                  date: movieDetails?.releaseDate,
+                  imagePath: movieDetails?.posterPath,
+                  id: movieDetails?.id,
+                  fetchMovieIds: fetchMovieIds,
+                )
+                    // ListTile(
                   // title: Text(
                   //   'Movie ID: ${movieIds[index]}',
                   //   style: TextStyle(color: Colors.white),

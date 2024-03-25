@@ -14,10 +14,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // Index to track selected bottom navigation bar item
-  late Future<List<Movie>> upcomingMovies; // Future for upcoming movies
+  late Future<List<MovieDetailsClass>>
+      upcomingMovies; // Future for upcoming movies
   late Future<List<Movie>> popularMovies; // Future for popular movies
   late Future<List<MovieDetailsClass>>
       topRatedMovies; // Future for top rated movies
+  bool isSelected = false;
 
   @override
   void initState() {
@@ -122,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
-            FutureBuilder<List<Movie>>(
+            FutureBuilder<List<MovieDetailsClass>>(
               future: upcomingMovies,
               builder: (context, snapshot) {
                 if (snapshot.connectionState != ConnectionState.done ||
@@ -148,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Container(
-                        height: 190,
+                        height: 210,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: movies.length,
@@ -169,16 +171,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   );
                                 },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Container(
-                                    width: 120,
-                                    child: Image.network(
-                                      'https://image.tmdb.org/t/p/original/${movie.posterPath}',
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                ),
+                                child: MovieCard(movie: movie),
                               ),
                             );
                           },

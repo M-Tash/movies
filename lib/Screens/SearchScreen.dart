@@ -64,7 +64,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 } else if (snapshot.hasError) {
                   return Center(
                     child: Text(
-                      'Error: ${snapshot.error}',
+                      'Error: ${'error'}',
                       style: TextStyle(
                           color: Colors.white), // Set text color to white
                     ),

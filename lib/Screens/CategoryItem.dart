@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
 
-import '../Api/FireBase.dart';
 import '../Screens/MovieDetails.dart';
 
-class WatchListItem extends StatefulWidget {
+class CategoryItem extends StatefulWidget {
   int? id;
   String? imagePath;
   String? title;
   String? date;
-  Function? fetchMovieIds;
 
-  WatchListItem(
-      {required this.title,
-      this.date,
-      required this.imagePath,
-      required this.id,
-      this.fetchMovieIds});
+  CategoryItem({
+    required this.title,
+    this.date,
+    required this.imagePath,
+    required this.id,
+  });
 
   @override
-  State<WatchListItem> createState() => _WatchListItemState();
+  State<CategoryItem> createState() => _CategoryItemState();
 }
 
-class _WatchListItemState extends State<WatchListItem> {
+class _CategoryItemState extends State<CategoryItem> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -78,14 +76,6 @@ class _WatchListItemState extends State<WatchListItem> {
                       color: Colors.grey,
                     ),
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          FireBase().deleteMovie(widget.id!);
-                          widget.fetchMovieIds!();
-                        });
-                      },
-                      child: Text('delete')),
                 ],
               ),
             ),
