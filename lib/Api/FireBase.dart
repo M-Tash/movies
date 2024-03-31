@@ -7,10 +7,12 @@ class FireBase {
 
   CollectionReference movies = FirebaseFirestore.instance.collection('movies');
 
-  Future<void> addMovie(int movieId) {
+  Future<void> addMovie(int movieId,bool isDone) {
     return movies
         .add({
-          'movie_id': movieId // John Doe
+          'movie_id': movieId,
+          'is_done': isDone
+
         })
         .then((value) => print("movie Added"))
         .catchError((error) => print("Failed to add user: $error"));

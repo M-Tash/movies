@@ -27,7 +27,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return Scaffold(
         backgroundColor: Color(0xff121312),
         appBar: AppBar(
-          title: Text('Categories'),
+          centerTitle: true,
+          backgroundColor: Color(0xff121312),
+          title: Text('Categories',style: TextStyle(color: Colors.white)),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -78,10 +80,17 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                   },
                                   child: Stack(
                                     children: [
-                                      Image.asset(
-                                        'assets/images/genre.jpg',
-                                        height: 150,
-                                        width: 200,
+                                      Container(
+                                         margin: EdgeInsets.only(bottom:10) ,
+                                        child: Image.asset(
+                                          'assets/images/$index.jpg',
+                                          height: 220,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+
+                                          // height: 150,
+                                          // width: 200,
+                                        ),
                                       ),
                                       Center(
                                         child: Text(

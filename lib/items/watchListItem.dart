@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies/Screens/WatchListScreen.dart';
 
 import '../Api/FireBase.dart';
 import '../Screens/MovieDetails.dart';
@@ -26,6 +27,7 @@ class _WatchListItemState extends State<WatchListItem> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -78,14 +80,14 @@ class _WatchListItemState extends State<WatchListItem> {
                       color: Colors.grey,
                     ),
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          FireBase().deleteMovie(widget.id!);
-                          widget.fetchMovieIds!();
-                        });
-                      },
-                      child: Text('delete')),
+                  // ElevatedButton(
+                  //     onPressed: () {
+                  //       setState(() {
+                  //         FireBase().deleteMovie(widget.id!);
+                  //         widget.fetchMovieIds!();
+                  //       });
+                  //     },
+                  //     child: Text('delete')),
                 ],
               ),
             ),

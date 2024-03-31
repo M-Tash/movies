@@ -23,7 +23,7 @@ class _WatchListScreenState extends State<WatchListScreen> {
     fetchMovieIds();
   }
 
-  Future<void> fetchMovieIds() async {
+     Future<void> fetchMovieIds() async {
     // Fetch movie IDs from Firestore collection
     FirebaseFirestore.instance
         .collection('movies')

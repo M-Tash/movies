@@ -29,7 +29,10 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
+        backgroundColor: Colors.black,
+
         title: Text(
           '',
           style:

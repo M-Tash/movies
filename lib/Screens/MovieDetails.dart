@@ -167,9 +167,11 @@ class _MovieDetailsState extends State<MovieDetails> {
                                 SizedBox(width: 10),
                                 GestureDetector(
                                   onTap: () {
+                                   // isSelected =true;
+                                       // FireBase().addMovie(widget.movieId, isSelected);
                                     setState(() {
                                       isSelected = !isSelected;
-                                      FireBase().addMovie(widget.movieId);
+                                      FireBase().addMovie(widget.movieId, isSelected);
                                     });
                                   },
                                   child: Icon(Icons.bookmark,
@@ -273,7 +275,9 @@ class _MovieCardState extends State<MovieCard> {
   Future<void> addMovie() {
     return movies
         .add({
-          'movie_id': widget.movie.id // John Doe
+          'movie_id': widget.movie.id,
+          'is_done': isSelected
+
         })
         .then((value) => print("movie Added"))
         .catchError((error) => print("Failed to add user: $error"));
@@ -301,8 +305,10 @@ class _MovieCardState extends State<MovieCard> {
                 ),
                 GestureDetector(
                   onTap: () {
+
                     setState(() {
                       isSelected = !isSelected;
+
                       if (isSelected == true) {
                         addMovie();
                       } else {
