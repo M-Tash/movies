@@ -21,14 +21,14 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-         backgroundColor: Colors.black ,
+        backgroundColor: Color(0xff121312),
         title: Text(
           'Search',
           style:
               TextStyle(color: Colors.white), // Set app bar text color to white
         ),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xff121312),
       body: Column(
         children: [
           Padding(
