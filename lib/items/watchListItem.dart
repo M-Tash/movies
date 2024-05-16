@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:movies/Screens/WatchListScreen.dart';
 
 import '../Api/FireBase.dart';
 import '../Screens/MovieDetails.dart';
-
 class WatchListItem extends StatefulWidget {
   int? id;
   String? imagePath;
   String? title;
   String? date;
   Function? fetchMovieIds;
+  bool
+      showDeleteIcon; // Add a parameter to control the visibility of the delete icon
 
   WatchListItem(
       {required this.title,
       this.date,
       required this.imagePath,
       required this.id,
-      this.fetchMovieIds});
+      this.fetchMovieIds,
+      this.showDeleteIcon =
+          true}); // Provide a default value for the showDeleteIcon parameter
 
   @override
   State<WatchListItem> createState() => _WatchListItemState();
@@ -27,7 +29,6 @@ class _WatchListItemState extends State<WatchListItem> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -45,24 +46,19 @@ class _WatchListItemState extends State<WatchListItem> {
               width: 110,
               height: 150,
               decoration: BoxDecoration(
-                // border: Border.all(color: Colors.white),
                 borderRadius: BorderRadius.circular(8.0),
-                color: Colors.grey[300], // Placeholder color
+                color: Colors.grey[300],
               ),
-              // Replace 'imagePath' with your actual image path
               child: Image.network(
                 'https://image.tmdb.org/t/p/original/${widget.imagePath}',
-                // Placeholder image
                 fit: BoxFit.cover,
               ),
             ),
-            SizedBox(width: 16.0), // Spacer between picture and text
-            // Title and Date
+            SizedBox(width: 16.0),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  // Title
                   Text(
                     '${widget.title}',
                     style: TextStyle(
@@ -71,8 +67,7 @@ class _WatchListItemState extends State<WatchListItem> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 8.0), // Spacer between title and date
-                  // Date
+                  SizedBox(height: 8.0),
                   Text(
                     widget.date == null ? '' : '${widget.date}',
                     style: TextStyle(
@@ -80,14 +75,19 @@ class _WatchListItemState extends State<WatchListItem> {
                       color: Colors.grey,
                     ),
                   ),
-                  // ElevatedButton(
-                  //     onPressed: () {
-                  //       setState(() {
-                  //         FireBase().deleteMovie(widget.id!);
-                  //         widget.fetchMovieIds!();
-                  //       });
-                  //     },
-                  //     child: Text('delete')),
+                  if (widget
+                      .showDeleteIcon) // Check if the delete icon should be shown
+                    Padding(
+                      padding: const EdgeInsets.only(left: 150),
+                      child: IconButton(
+                        onPressed: () async {
+                          await FireBase().deleteMovie(widget.id!);
+                          setState(() {});
+                          widget.fetchMovieIds!();
+                        },
+                        icon: Icon(Icons.delete, color: Colors.red, size: 35),
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -97,5 +97,4 @@ class _WatchListItemState extends State<WatchListItem> {
     );
   }
 
-  void fetchMovieIds() {}
 }

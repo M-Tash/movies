@@ -1,16 +1,13 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../Api/Api manager.dart';
-import '../Api/FireBase.dart';
 import '../Models/movieDetailsModel.dart';
 
 class MovieDetails extends StatefulWidget {
-
-
-
   static const String routeName = 'MovieDetails';
-
   final int movieId;
 
   const MovieDetails({Key? key, required this.movieId}) : super(key: key);
@@ -21,7 +18,6 @@ class MovieDetails extends StatefulWidget {
 
 class _MovieDetailsState extends State<MovieDetails> {
   late Future<MovieDetailsClass?> _movieDetails;
-
   late Future<List<MovieDetailsClass?>> _similarMovies;
 
   @override
@@ -30,8 +26,6 @@ class _MovieDetailsState extends State<MovieDetails> {
     _movieDetails = Api().getDetails(widget.movieId);
     _similarMovies = Api().getSimilarMovie(widget.movieId);
   }
-
-  bool isSelected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +111,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                                     style: TextButton.styleFrom(
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(10)),
+                                            BorderRadius.circular(10)),
                                         side: BorderSide(
                                             width: 1, color: Colors.white)),
                                     onPressed: () {
@@ -165,21 +159,6 @@ class _MovieDetailsState extends State<MovieDetails> {
                                   ),
                                 ),
                                 SizedBox(width: 10),
-                                GestureDetector(
-                                  onTap: () {
-                                   // isSelected =true;
-                                       // FireBase().addMovie(widget.movieId, isSelected);
-                                    setState(() {
-                                      isSelected = !isSelected;
-                                      FireBase().addMovie(widget.movieId, isSelected);
-                                    });
-                                  },
-                                  child: Icon(Icons.bookmark,
-                                      size: 30,
-                                      color: isSelected
-                                          ? Color(0xffFFBB3B)
-                                          : Colors.grey),
-                                )
 
                               ],
                             ),
@@ -200,7 +179,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                         return Center(child: Text('Error: ${snapshot.error}'));
                       } else {
                         final similarMovies =
-                            snapshot.data as List<MovieDetailsClass>;
+                        snapshot.data as List<MovieDetailsClass>;
                         return Container(
                           color: Color(0xff282A28),
                           child: Column(
@@ -237,7 +216,10 @@ class _MovieDetailsState extends State<MovieDetails> {
                                             ),
                                           );
                                         },
-                                        child: MovieCard(movie: similarMovie),
+                                        child: MovieCard(
+                                          movie: similarMovie,
+                                          movieId: similarMovie.id!,
+                                        ),
                                       ),
                                     );
                                   },
@@ -261,26 +243,67 @@ class _MovieDetailsState extends State<MovieDetails> {
 
 class MovieCard extends StatefulWidget {
   final MovieDetailsClass movie;
+  final int movieId;
 
-  const MovieCard({Key? key, required this.movie}) : super(key: key);
+  const MovieCard({
+    Key? key,
+    required this.movie,
+    required this.movieId,
+  }) : super(key: key);
 
   @override
   State<MovieCard> createState() => _MovieCardState();
 }
 
 class _MovieCardState extends State<MovieCard> {
-  bool isSelected = false;
-  CollectionReference movies = FirebaseFirestore.instance.collection('movies');
+  late bool isSelected;
+  late CollectionReference movies;
 
-  Future<void> addMovie() {
-    return movies
-        .add({
-          'movie_id': widget.movie.id,
-          'is_done': isSelected
+  @override
+  void initState() {
+    super.initState();
+    isSelected = false;
+    movies = FirebaseFirestore.instance.collection('movies');
+    fetchBookmarkStatus();
+  }
 
-        })
-        .then((value) => print("movie Added"))
-        .catchError((error) => print("Failed to add user: $error"));
+  Future<void> fetchBookmarkStatus() async {
+    final snapshot = await movies.doc(widget.movie.id.toString()).get();
+    if (snapshot.exists) {
+      setState(() {
+        isSelected = snapshot.get('is_done');
+      });
+    }
+  }
+
+  Future<void> updateBookmarkStatus(bool value) async {
+    // Get a reference to the document for this movie ID
+    final movieDoc = movies.doc(widget.movie.id.toString());
+
+    // Check if the document already exists in Firestore
+    movieDoc.get().then((docSnapshot) {
+      if (docSnapshot.exists) {
+        // If the document exists, update the bookmark status
+        movieDoc.update({
+          'is_done': value,
+        }).then((_) {
+          setState(() {
+            isSelected = value;
+          });
+        }).catchError((error) => print("Failed to update bookmark: $error"));
+      } else {
+        // If the document doesn't exist, add it with the movie ID and bookmark status
+        movieDoc.set({
+          'movie_id': widget.movie.id, // Store the movie ID
+          'is_done': value,
+        }).then((_) {
+          setState(() {
+            isSelected = value;
+          });
+        }).catchError((error) => print("Failed to add movie: $error"));
+      }
+    }).catchError(
+        (error) => print("Failed to check document existence: $error"));
   }
 
   @override
@@ -302,20 +325,19 @@ class _MovieCardState extends State<MovieCard> {
                   width: 100,
                   height: 127,
                   fit: BoxFit.fitWidth,
+                  errorBuilder: (context, error, stackTrace) {
+                    // Return a placeholder widget or an error message
+                    return Placeholder(
+                      fallbackWidth: 100,
+                      fallbackHeight: 127,
+                    ); // You can replace Placeholder with any other widget
+                  },
                 ),
                 GestureDetector(
                   onTap: () {
-
                     setState(() {
                       isSelected = !isSelected;
-
-                      if (isSelected == true) {
-                        addMovie();
-                      } else {
-                        setState(() {
-                          FireBase().deleteMovie(widget.movie.id!);
-                        });
-                      }
+                      updateBookmarkStatus(isSelected);
                     });
                   },
                   child: Icon(Icons.bookmark,
@@ -336,7 +358,7 @@ class _MovieCardState extends State<MovieCard> {
                   width: 2,
                 ),
                 Text(
-                  '${widget.movie.voteAverage!.toString().substring(0, 3)}',
+                  '${widget.movie.voteAverage!.toString().substring(0, min(3, widget.movie.voteAverage!.toString().length))}',
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
