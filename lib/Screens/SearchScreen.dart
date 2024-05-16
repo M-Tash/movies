@@ -3,7 +3,6 @@ import 'package:movies/items/watchListItem.dart';
 
 import '../Api/Api manager.dart'; // Import your API manager
 import '../Models/movieModel.dart';
-import 'MovieDetails.dart'; // Import your Movie model
 
 class SearchScreen extends StatefulWidget {
   static const String routeName = 'SearchScreen';
@@ -15,6 +14,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController _searchController = TextEditingController();
   late Future<List<Movie>> _searchResults = Future.value([]);
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +24,7 @@ class _SearchScreenState extends State<SearchScreen> {
         backgroundColor: Color(0xff121312),
         title: Text(
           'Search',
-          style:
-              TextStyle(color: Colors.white), // Set app bar text color to white
+          style: TextStyle(color: Colors.white),
         ),
       ),
       backgroundColor: Color(0xff121312),
@@ -36,16 +35,12 @@ class _SearchScreenState extends State<SearchScreen> {
             child: TextField(
               controller: _searchController,
               style: TextStyle(color: Colors.white),
-              // Set text color of search bar to white
               decoration: InputDecoration(
                 hintText: 'Search for a movie...',
                 hintStyle: TextStyle(color: Colors.white70),
-                // Set hint text color to white70
                 suffixIcon: IconButton(
                   icon: Icon(Icons.search),
-                  onPressed: () {
-                    _searchMovies();
-                  },
+                  onPressed: _searchMovies,
                 ),
               ),
               onSubmitted: (_) {
@@ -54,47 +49,56 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
           Expanded(
-            child: FutureBuilder<List<Movie>>(
-              future: _searchResults,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
+            child: _isLoading
+                ? Center(
                     child: CircularProgressIndicator(),
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text(
-                      'Error: ${'error'}',
-                      style: TextStyle(
-                          color: Colors.white), // Set text color to white
-                    ),
-                  );
-                } else {
-                  List<Movie> movies = snapshot.data ?? [];
-                  return ListView.builder(
-                    itemCount: movies.length,
-                    itemBuilder: (context, index) {
-                      Movie movie = movies[index];
-                      return WatchListItem(title: movie.title, imagePath: movie.posterPath,id: movie.id);
-                      //   ListTile(
-                      //   title: Text(
-                      //     movie.title,
-                      //     style: TextStyle(
-                      //         color: Colors.white), // Set text color to white
-                      //   ),
-                      //   onTap: () {
-                      //     // Navigate to movie details screen
-                      //     navigateToMovieDetails(movie.id);
-                      //   },
-                      // );
-                    },
-                  );
-                }
-              },
-            ),
+                  )
+                : _buildSearchResults(),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSearchResults() {
+    return FutureBuilder<List<Movie>>(
+      future: _searchResults,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text(
+              "We're sorry, but it seems that the movie you're searching for isn't available in our database",
+              style: TextStyle(color: Colors.white),
+            ),
+          );
+        } else {
+          List<Movie> movies = snapshot.data ?? [];
+          if (movies.isEmpty) {
+            return Center(
+              child: Text(
+                "No results found.",
+                style: TextStyle(color: Colors.white),
+              ),
+            );
+          }
+          return ListView.builder(
+            itemCount: movies.length,
+            itemBuilder: (context, index) {
+              Movie movie = movies[index];
+              return WatchListItem(
+                showDeleteIcon: false,
+                title: movie.title,
+                imagePath: movie.posterPath,
+                id: movie.id,
+              );
+            },
+          );
+        }
+      },
     );
   }
 
@@ -102,13 +106,20 @@ class _SearchScreenState extends State<SearchScreen> {
     String query = _searchController.text.trim();
     if (query.isNotEmpty) {
       setState(() {
-        _searchResults = Api().searchMovies(query);
+        _isLoading = true;
+      });
+      Api().searchMovies(query).then((movies) {
+        setState(() {
+          _searchResults = Future.value(movies);
+          _isLoading = false;
+        });
+      }).catchError((error) {
+        setState(() {
+          _isLoading = false;
+        });
+        // Handle error
+        print("Error searching movies: $error");
       });
     }
-  }
-
-  void navigateToMovieDetails(int movieId) {
-    // Implement navigation to movie details screen
-    Navigator.pushNamed(context, MovieDetails.routeName, arguments: movieId);
   }
 }

@@ -98,7 +98,12 @@ class Api {
   }
   // Search for movies based on a query string
   Future<List<Movie>> searchMovies(String query) async {
-    final response = await http.get(Uri.parse("$searchApiUrl&query=$query"));
+    final encodedQuery = Uri.encodeQueryComponent(
+        query); // Encode the query to handle special characters
+    final searchUrl =
+        "$searchApiUrl&query=$encodedQuery"; // Include the encoded query in the URL
+
+    final response = await http.get(Uri.parse(searchUrl));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body)['results'];

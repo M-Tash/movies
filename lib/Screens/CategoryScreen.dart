@@ -96,8 +96,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                         child: Text(
                                           genre?['name'] ?? '',
                                           style: TextStyle(
-                                            color: Colors.white,
-                                          ),
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
                                         ),
                                       ),
                                     ],

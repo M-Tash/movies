@@ -51,15 +51,13 @@ class _WatchListScreenState extends State<WatchListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:  Color(0xff282A28),
+      backgroundColor: Color(0xff121312),
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor:  Color(0xff282A28),
-        title: Text('WatchList',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 25
-        ),
+        backgroundColor: Color(0xff121312),
+        title: Text(
+          'WatchList',
+          style: TextStyle(color: Colors.white, fontSize: 25),
         ),
       ),
       body: FutureBuilder<List<MovieDetailsClass?>>(

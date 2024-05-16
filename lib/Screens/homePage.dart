@@ -34,26 +34,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff121312),
-      // appBar: AppBar(
-      //   backgroundColor: Colors.black12,
-      //   foregroundColor: Colors.white,
-      //   leading: IconButton(
-      //     onPressed: () {},
-      //     icon: const Icon(Icons.menu),
-      //   ),
-      //   title: const Text("Show Spot"),
-      //   centerTitle: true,
-      //   actions: [
-      //     IconButton(
-      //       onPressed: () {},
-      //       icon: const Icon(Icons.search_rounded),
-      //     ),
-      //     IconButton(
-      //       onPressed: () {},
-      //       icon: const Icon(Icons.notifications),
-      //     ),
-      //   ],
-      // ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,7 +151,8 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   );
                                 },
-                                child: MovieCard(movie: movie),
+                                child:
+                                    MovieCard(movie: movie, movieId: movie.id!),
                               ),
                             );
                           },
@@ -231,7 +212,10 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                       );
                                     },
-                                    child: MovieCard(movie: movie),
+                                    child: MovieCard(
+                                      movie: movie,
+                                      movieId: movie.id!,
+                                    ),
                                   ),
                                 );
                               },
