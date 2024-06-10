@@ -7,12 +7,14 @@ import '../Models/movieModel.dart';
 class SearchScreen extends StatefulWidget {
   static const String routeName = 'SearchScreen';
 
+  const SearchScreen({super.key});
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   late Future<List<Movie>> _searchResults = Future.value([]);
   bool _isLoading = false;
 
@@ -21,25 +23,25 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Color(0xff121312),
-        title: Text(
+        backgroundColor: const Color(0xff121312),
+        title: const Text(
           'Search',
           style: TextStyle(color: Colors.white),
         ),
       ),
-      backgroundColor: Color(0xff121312),
+      backgroundColor: const Color(0xff121312),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: _searchController,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 hintText: 'Search for a movie...',
-                hintStyle: TextStyle(color: Colors.white70),
+                hintStyle: const TextStyle(color: Colors.white70),
                 suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
+                  icon: const Icon(Icons.search),
                   onPressed: _searchMovies,
                 ),
               ),
@@ -50,7 +52,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           Expanded(
             child: _isLoading
-                ? Center(
+                ? const Center(
                     child: CircularProgressIndicator(),
                   )
                 : _buildSearchResults(),
@@ -65,11 +67,11 @@ class _SearchScreenState extends State<SearchScreen> {
       future: _searchResults,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          return Center(
+          return const Center(
             child: Text(
               "We're sorry, but it seems that the movie you're searching for isn't available in our database",
               style: TextStyle(color: Colors.white),
@@ -78,7 +80,7 @@ class _SearchScreenState extends State<SearchScreen> {
         } else {
           List<Movie> movies = snapshot.data ?? [];
           if (movies.isEmpty) {
-            return Center(
+            return const Center(
               child: Text(
                 "No results found.",
                 style: TextStyle(color: Colors.white),
@@ -113,11 +115,11 @@ class _SearchScreenState extends State<SearchScreen> {
           _searchResults = Future.value(movies);
           _isLoading = false;
         });
+        print("Search completed with ${movies.length} results");
       }).catchError((error) {
         setState(() {
           _isLoading = false;
         });
-        // Handle error
         print("Error searching movies: $error");
       });
     }

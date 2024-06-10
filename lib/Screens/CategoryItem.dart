@@ -9,6 +9,7 @@ class CategoryItem extends StatefulWidget {
   String? date;
 
   CategoryItem({
+    super.key,
     required this.title,
     this.date,
     required this.imagePath,
@@ -32,7 +33,7 @@ class _CategoryItemState extends State<CategoryItem> {
         );
       },
       child: Container(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -43,13 +44,31 @@ class _CategoryItemState extends State<CategoryItem> {
               decoration: BoxDecoration(
                 // border: Border.all(color: Colors.white),
                 borderRadius: BorderRadius.circular(8.0),
-                color: Colors.grey[300], // Placeholder color
+                // Placeholder color
               ),
               // Replace 'imagePath' with your actual image path
               child: Image.network(
                 'https://image.tmdb.org/t/p/original/${widget.imagePath}',
-                // Placeholder image
                 fit: BoxFit.cover,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+                errorBuilder: (BuildContext context, Object error,
+                    StackTrace? stackTrace) {
+                  return const Center(
+                    child: Icon(
+                      Icons.error,
+                      color: Colors.red,
+                    ),
+                  );
+                },
               ),
             ),
             SizedBox(width: 16.0), // Spacer between picture and text
@@ -61,17 +80,17 @@ class _CategoryItemState extends State<CategoryItem> {
                   // Title
                   Text(
                     '${widget.title}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 8.0), // Spacer between title and date
+                  const SizedBox(height: 8.0), // Spacer between title and date
                   // Date
                   Text(
                     widget.date == null ? '' : '${widget.date}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14.0,
                       color: Colors.grey,
                     ),
@@ -85,5 +104,4 @@ class _CategoryItemState extends State<CategoryItem> {
     );
   }
 
-  void fetchMovieIds() {}
 }

@@ -17,12 +17,10 @@ class CategoryDetailsScreen extends StatefulWidget {
 }
 
 class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
-  @override
   late Future<List<Movie>> genreResult;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     genreResult = Api().getMoviesByGenre(widget.genreId);
   }
@@ -32,12 +30,6 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
 
       appBar: AppBar(
         backgroundColor: Colors.black,
-
-        title: Text(
-          '',
-          style:
-              TextStyle(color: Colors.white), // Set app bar text color to white
-        ),
       ),
       backgroundColor: Colors.black,
       body: Column(
@@ -47,11 +39,11 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
               future: genreResult,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasError) {
-                  return Center(
+                  return const Center(
                     child: Text(
                       'Error: ${'error'}',
                       style: TextStyle(

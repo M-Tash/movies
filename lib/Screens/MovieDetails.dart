@@ -30,13 +30,13 @@ class _MovieDetailsState extends State<MovieDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff121312),
+      backgroundColor: const Color(0xff121312),
       body: SingleChildScrollView(
         child: FutureBuilder<MovieDetailsClass?>(
           future: _movieDetails,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else {
@@ -59,7 +59,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.arrow_back,
                               color: Colors.white,
                               size: 30,
@@ -71,17 +71,17 @@ class _MovieDetailsState extends State<MovieDetails> {
                     padding: EdgeInsets.only(top: 10, left: 15),
                     child: Text(
                       movie.originalTitle!,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 5, left: 15),
+                    padding: const EdgeInsets.only(top: 5, left: 15),
                     child: Text(
                       ' ${movie.releaseDate}  ${movie.runtime! ~/ 60}h  ${movie.runtime! % 60}m ',
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
                           color: Colors.white54),
@@ -104,7 +104,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(top: 10, left: 10),
+                            padding: const EdgeInsets.only(top: 10, left: 10),
                             child: Row(
                               children: [
                                 TextButton(
@@ -112,30 +112,30 @@ class _MovieDetailsState extends State<MovieDetails> {
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
                                             BorderRadius.circular(10)),
-                                        side: BorderSide(
+                                        side: const BorderSide(
                                             width: 1, color: Colors.white)),
                                     onPressed: () {
                                       // todo:go to genre
                                     },
                                     child: Text('${movie.genres![0].name}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
                                           color: Colors.grey,
                                         ))),
-                                SizedBox(
+                                const SizedBox(
                                   width: 5,
                                 ),
                               ],
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.only(left: 10, top: 10),
+                            padding: const EdgeInsets.only(left: 10, top: 10),
                             width: 235,
                             height: 120,
                             child: Text(
                               movie.overview!,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.grey),
@@ -145,21 +145,20 @@ class _MovieDetailsState extends State<MovieDetails> {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.star,
                                   color: Color(0xffFFBB3B),
                                   size: 30,
                                 ),
                                 Text(
-                                  '${movie.voteAverage!.toString().substring(0, 3)}',
-                                  style: TextStyle(
+                                  movie.voteAverage!.toString().substring(0, 3),
+                                  style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700,
                                     color: Colors.white,
                                   ),
                                 ),
-                                SizedBox(width: 10),
-
+                                const SizedBox(width: 10),
                               ],
                             ),
                           )
@@ -167,26 +166,26 @@ class _MovieDetailsState extends State<MovieDetails> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   FutureBuilder(
                     future: _similarMovies,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
                         return Center(child: Text('Error: ${snapshot.error}'));
                       } else {
                         final similarMovies =
                         snapshot.data as List<MovieDetailsClass>;
                         return Container(
-                          color: Color(0xff282A28),
+                          color: const Color(0xff282A28),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
                                 child: Text(
                                   'More Like This',
                                   style: TextStyle(
@@ -195,7 +194,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                                       color: Colors.white),
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 height: 210,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
@@ -290,7 +289,7 @@ class _MovieCardState extends State<MovieCard> {
           setState(() {
             isSelected = value;
           });
-        }).catchError((error) => print("Failed to update bookmark: $error"));
+        });
       } else {
         // If the document doesn't exist, add it with the movie ID and bookmark status
         movieDoc.set({
@@ -300,10 +299,9 @@ class _MovieCardState extends State<MovieCard> {
           setState(() {
             isSelected = value;
           });
-        }).catchError((error) => print("Failed to add movie: $error"));
+        });
       }
-    }).catchError(
-        (error) => print("Failed to check document existence: $error"));
+    });
   }
 
   @override
@@ -311,7 +309,7 @@ class _MovieCardState extends State<MovieCard> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: Container(
-        decoration: BoxDecoration(color: Color(0xff343534)),
+        decoration: const BoxDecoration(color: Color(0xff343534)),
         height: 200,
         width: 100,
         child: Column(
@@ -321,13 +319,24 @@ class _MovieCardState extends State<MovieCard> {
             Stack(
               children: [
                 Image.network(
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    } else {
+                      return const Center(
+                        heightFactor: 2,
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
                   'https://image.tmdb.org/t/p/original/${widget.movie.posterPath}',
                   width: 100,
                   height: 127,
                   fit: BoxFit.fitWidth,
                   errorBuilder: (context, error, stackTrace) {
                     // Return a placeholder widget or an error message
-                    return Placeholder(
+                    return const Placeholder(
                       fallbackWidth: 100,
                       fallbackHeight: 127,
                     ); // You can replace Placeholder with any other widget
@@ -342,24 +351,26 @@ class _MovieCardState extends State<MovieCard> {
                   },
                   child: Icon(Icons.bookmark,
                       size: 30,
-                      color: isSelected ? Color(0xffFFBB3B) : Colors.grey),
+                      color:
+                          isSelected ? const Color(0xffFFBB3B) : Colors.grey),
                 ),
               ],
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.star,
                   color: Color(0xffFFBB3B),
                   size: 15,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 2,
                 ),
                 Text(
-                  '${widget.movie.voteAverage!.toString().substring(0, min(3, widget.movie.voteAverage!.toString().length))}',
-                  style: TextStyle(
+                  widget.movie.voteAverage!.toString().substring(
+                      0, min(3, widget.movie.voteAverage!.toString().length)),
+                  style: const TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
@@ -372,18 +383,18 @@ class _MovieCardState extends State<MovieCard> {
               height: 26,
               child: Text(
                 ' ${widget.movie.originalTitle!}',
-                style: TextStyle(fontSize: 10, color: Colors.white),
+                style: const TextStyle(fontSize: 10, color: Colors.white),
               ),
             ),
-            Container(
+            SizedBox(
               width: 70,
               child: Row(
                 children: [
                   Text(
                     '   ${widget.movie.releaseDate!.substring(0, 4)}',
-                    style: TextStyle(fontSize: 8, color: Colors.white),
+                    style: const TextStyle(fontSize: 8, color: Colors.white),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                 ],

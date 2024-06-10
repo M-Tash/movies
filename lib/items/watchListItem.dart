@@ -11,8 +11,7 @@ class WatchListItem extends StatefulWidget {
   bool
       showDeleteIcon; // Add a parameter to control the visibility of the delete icon
 
-  WatchListItem(
-      {required this.title,
+  WatchListItem({super.key, required this.title,
       this.date,
       required this.imagePath,
       required this.id,
@@ -47,30 +46,40 @@ class _WatchListItemState extends State<WatchListItem> {
               height: 150,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
-                color: Colors.grey[300],
               ),
               child: Image.network(
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  } else {
+                    return const Center(
+                      heightFactor: 2,
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
                 'https://image.tmdb.org/t/p/original/${widget.imagePath}',
                 fit: BoxFit.cover,
               ),
             ),
-            SizedBox(width: 16.0),
+            const SizedBox(width: 16.0),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     '${widget.title}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                   Text(
                     widget.date == null ? '' : '${widget.date}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14.0,
                       color: Colors.grey,
                     ),
@@ -85,7 +94,8 @@ class _WatchListItemState extends State<WatchListItem> {
                           setState(() {});
                           widget.fetchMovieIds!();
                         },
-                        icon: Icon(Icons.delete, color: Colors.red, size: 35),
+                        icon: const Icon(Icons.delete,
+                            color: Colors.red, size: 35),
                       ),
                     ),
                 ],

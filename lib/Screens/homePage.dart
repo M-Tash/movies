@@ -8,6 +8,8 @@ import 'MovieDetails.dart'; // Import MovieDetails screen
 class HomePage extends StatefulWidget {
   static const String routeName = 'Home';
 
+  const HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -33,7 +35,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff121312),
+      backgroundColor: const Color(0xff121312),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                             Container(
                               width: 400,
                               decoration: BoxDecoration(
-                                color: Color(0xff121312),
+                                color: const Color(0xff121312),
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: Image.network(
@@ -81,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                               padding: const EdgeInsets.only(top: 90, left: 5),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(5),
-                                child: Container(
+                                child: SizedBox(
                                   width: 120,
                                   child: Image.network(
                                     'https://image.tmdb.org/t/p/original/${movie.posterPath}',
@@ -91,10 +93,11 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Container(
-                                margin: EdgeInsets.only(top: 225, left: 135),
+                                margin:
+                                    const EdgeInsets.only(top: 225, left: 135),
                                 child: Text(
-                                  '${movie.title}',
-                                  style: TextStyle(color: Colors.white),
+                                  movie.title,
+                                  style: const TextStyle(color: Colors.white),
                                 ))
                           ],
                         ),
@@ -119,8 +122,8 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
                         child: Text(
                           'New Releases',
                           style: TextStyle(
@@ -170,18 +173,18 @@ class _HomePageState extends State<HomePage> {
                 future: topRatedMovies,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else {
                     final movies = snapshot.data!;
                     return Container(
-                      color: Color(0xff282A28),
+                      color: const Color(0xff282A28),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
                             child: Text(
                               'Recommended',
                               style: TextStyle(

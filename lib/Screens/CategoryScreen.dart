@@ -18,18 +18,19 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     fetchGenres();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xff121312),
+        backgroundColor: const Color(0xff121312),
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Color(0xff121312),
-          title: Text('Categories',style: TextStyle(color: Colors.white)),
+          backgroundColor: const Color(0xff121312),
+          title:
+              const Text('Categories', style: TextStyle(color: Colors.white)),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -39,15 +40,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 future: fetchGenres(),
                 builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
                           child: Text(
                             'Genres',
                             style: TextStyle(
@@ -60,7 +61,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             height: MediaQuery.of(context).size.height - 200,
                             child: GridView.builder(
                               gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2,
                                       crossAxisSpacing: 20,
                                       childAspectRatio: 1.3),
@@ -81,7 +82,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                   child: Stack(
                                     children: [
                                       Container(
-                                         margin: EdgeInsets.only(bottom:10) ,
+                                        margin:
+                                            const EdgeInsets.only(bottom: 10),
                                         child: Image.asset(
                                           'assets/images/$index.jpg',
                                           height: 220,
@@ -95,7 +97,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                       Center(
                                         child: Text(
                                           genre?['name'] ?? '',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold),

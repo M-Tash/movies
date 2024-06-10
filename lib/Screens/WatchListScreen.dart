@@ -8,6 +8,8 @@ import '../Models/movieDetailsModel.dart';
 class WatchListScreen extends StatefulWidget {
   static const String routeName = 'WatchListScreen';
 
+  const WatchListScreen({super.key});
+
   @override
   State<WatchListScreen> createState() => _WatchListScreenState();
 }
@@ -51,11 +53,11 @@ class _WatchListScreenState extends State<WatchListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff121312),
+      backgroundColor: const Color(0xff121312),
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Color(0xff121312),
-        title: Text(
+        backgroundColor: const Color(0xff121312),
+        title: const Text(
           'WatchList',
           style: TextStyle(color: Colors.white, fontSize: 25),
         ),
@@ -64,7 +66,7 @@ class _WatchListScreenState extends State<WatchListScreen> {
         future: _movieDetailsList,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
@@ -75,8 +77,9 @@ class _WatchListScreenState extends State<WatchListScreen> {
             // Display the list of movie details
             return ListView.separated(
               separatorBuilder: (context, index) {
-                return Divider(color: Colors.white,
-                    height: 2,indent: 5,endIndent: 5,);
+                return const Divider(
+                  color: Colors.white,
+                  height: 2,indent: 5,endIndent: 5,);
               },
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
@@ -88,17 +91,7 @@ class _WatchListScreenState extends State<WatchListScreen> {
                   imagePath: movieDetails?.posterPath,
                   id: movieDetails?.id,
                   fetchMovieIds: fetchMovieIds,
-                )
-                    // ListTile(
-                  // title: Text(
-                  //   'Movie ID: ${movieIds[index]}',
-                  //   style: TextStyle(color: Colors.white),
-                  // ),
-                  // subtitle: movieDetails != null
-                  //     ? Text('Details: ${movieDetails.title}')
-                  //     : Text('Details not available'),
-               // )
-                ;
+                );
               },
             );
           }

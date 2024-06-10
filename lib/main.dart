@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:movies/Screens/CategoryDetailsScreen.dart';
 import 'package:movies/Screens/homeScreen.dart';
 
 import 'Screens/CategoryScreen.dart';
@@ -24,11 +23,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: HomeScreen.routeName,
       routes: {
-        HomeScreen.routeName: (context) => HomeScreen(),
-        HomePage.routeName: (context) => HomePage(),
-        SearchScreen.routeName: (context) => SearchScreen(),
+        HomeScreen.routeName: (context) => const HomeScreen(),
+        HomePage.routeName: (context) => const HomePage(),
+        SearchScreen.routeName: (context) => const SearchScreen(),
         CategoryScreen.routeName: (context) => CategoryScreen(),
-        WatchListScreen.routeName: (context) => WatchListScreen(),
+        WatchListScreen.routeName: (context) => const WatchListScreen(),
       },
     );
   }

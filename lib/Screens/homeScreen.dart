@@ -8,6 +8,8 @@ import 'homePage.dart';
 class HomeScreen extends StatefulWidget {
   static const String routeName = 'HomeScreen';
 
+  const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -18,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff121312),
+      backgroundColor: const Color(0xff121312),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.black12,
@@ -56,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<Widget> tabs = [
-    HomePage(),
+    const HomePage(),
     SearchScreen(),
     CategoryScreen(),
     WatchListScreen()
