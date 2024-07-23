@@ -23,6 +23,12 @@ This is a movie application built with Flutter using Firebase Firestore for data
 3. Add movies to your watchlist by tapping on the bookmark icon.
 4. View your watchlist by navigating to the watchlist screen.
 
+## Demo 
+
+https://github.com/user-attachments/assets/92d0cc0b-214d-407c-b26c-76818adcf051
+
+
+
 ## Screenshots
 <img src="https://github.com/M-Tash/movies/assets/158067954/602f7169-6cf7-41f2-82b9-3afa43fdc6b3" alt="Screenshot 3" width="40%">
 <img src="https://github.com/M-Tash/movies/assets/158067954/b66a7415-3d19-483f-bca0-ef9076b44b0a" alt="Screenshot 1" width="40%">
