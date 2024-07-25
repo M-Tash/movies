@@ -35,10 +35,3 @@ https://github.com/user-attachments/assets/92d0cc0b-214d-407c-b26c-76818adcf051
 <img src="https://github.com/M-Tash/movies/assets/158067954/759ff72b-f705-4ad1-ae77-f98724e17e2b" alt="Screenshot 2" width="40%">
 <img src="https://github.com/M-Tash/movies/assets/158067954/6175a5bb-82f3-4a20-a406-d8122d565975" alt="Screenshot 3" width="40%">
 
-
-## Installation
-
-- Clone the repository:
-
-```bash
-git clone https://github.com/M-Tash/movies.git
